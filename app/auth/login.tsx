@@ -1,6 +1,7 @@
 import { router } from "expo-router";
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");
@@ -32,7 +33,7 @@ export default function Login() {
       />
 
       <TouchableOpacity style={styles.button} onPress={handleEntrar}>
-        <Text style={styles.buttonText}>Entrar</Text>
+        <Text style={styles.buttonText}> <FontAwesome name="sign-in" size={18} color="#000" /> Entrar</Text>
       </TouchableOpacity>
     </View>
   );
