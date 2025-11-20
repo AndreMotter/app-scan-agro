@@ -1,7 +1,7 @@
+import { FontAwesome } from '@expo/vector-icons';
 import { router } from "expo-router";
 import React from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 export default function Home() {
   function handleSair() {
@@ -15,7 +15,11 @@ export default function Home() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => router.push("/cadastros" as any)}>
           <FontAwesome name="user-circle" size={24} color="#000" />
-          <Text style={styles.buttonText}>Cadastros</Text>
+          <Text style={styles.buttonText}>Gerenciar Usuários</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => router.push("cultura/sgr_cultura" as any)}>
+          <FontAwesome name="user-circle" size={24} color="#000" />
+          <Text style={styles.buttonText}>Culturas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => router.push("/lancamentos" as any)}>
           <FontAwesome name="list-alt" size={24} color="#000" /> 
