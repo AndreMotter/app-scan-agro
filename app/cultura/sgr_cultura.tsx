@@ -1,11 +1,18 @@
-import { FontAwesome } from '@expo/vector-icons';
+import { FontAwesome } from "@expo/vector-icons";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { API_BASE_URL } from "../../constants/api";
 
 export default function Cultura() {
-  
   const [culturas, setCulturas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -15,12 +22,13 @@ export default function Cultura() {
   const [nomecientifico, setNomeCientifico] = useState("");
   const [descricao, setDescricao] = useState("");
 
+  const [codigocultura, setCodigocultura] = useState<number | null>(null);
+
   function BotaoSair() {
     router.replace("/auth/login" as any);
   }
 
-   async function ListarCulturas() {
-    debugger
+  async function ListarCulturas() {
     try {
       const resp = await fetch(API_BASE_URL + "/sgr-cultura/ListarTodos");
       const data = await resp.json();
@@ -32,31 +40,73 @@ export default function Cultura() {
     }
   }
 
+  function AbrirEditarCultura(item: any) {
+    setCodigocultura(item.codigocultura);
+    setNome(item.nome);
+    setNomeCientifico(item.nomecientifico ?? "");
+    setDescricao(item.descricao ?? "");
+    setModo("editar");
+  }
+
+  function AbrirIncluirCultura() {
+    LimparCultura();
+    setModo("novo");
+  }
+
+  function LimparCultura() {
+    setCodigocultura(null);
+    setNome("");
+    setNomeCientifico("");
+    setDescricao("");
+  }
+
   async function SalvarCultura() {
-    
     if (!nome.trim()) {
       Alert.alert("Atenção", "O nome da cultura é obrigatório!");
       return;
     }
 
     try {
-      const resp = await fetch(API_BASE_URL + "/sgr-cultura/Salvar", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          nome,
-          nomecientifico,
-          descricao,
-        }),
-      });
+      if (modo === "editar") {
+        if (!codigocultura) {
+          Alert.alert("Erro", "Nenhuma cultura selecionada para edição.");
+          return;
+        }
 
-      if (!resp.ok) {
-         Alert.alert("Erro", "Não foi possível salvar a cultura.");
+        const resp = await fetch(
+          API_BASE_URL + `/sgr-cultura/Alterar/${codigocultura}`,
+          {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              nome,
+              nomecientifico,
+              descricao,
+            }),
+          }
+        );
+
+        if (!resp.ok) {
+          Alert.alert("Erro", "Não foi possível alterar a cultura.");
+          return;
+        }
+      } else {
+        const resp = await fetch(API_BASE_URL + "/sgr-cultura/Salvar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            nome,
+            nomecientifico,
+            descricao,
+          }),
+        });
+
+        if (!resp.ok) {
+          Alert.alert("Erro", "Não foi possível salvar a cultura.");
+        }
       }
 
-      setNome("");
-      setNomeCientifico("");
-      setDescricao("");
+      LimparCultura();
       setModo("lista");
       ListarCulturas();
     } catch (e) {
@@ -65,39 +115,29 @@ export default function Cultura() {
   }
 
   async function ExcluirCultura(codigocultura: number) {
-                    const resp = await fetch(API_BASE_URL + `/sgr-cultura/Excluir/${codigocultura}`, {
-                  method: "DELETE",
-                });
+    Alert.alert("Excluir", "Tem certeza que deseja excluir esta cultura?", [
+      { text: "Cancelar" },
+      {
+        text: "Sim",
+        onPress: async () => {
+          try {
+            const resp = await fetch(
+              API_BASE_URL + `/sgr-cultura/Excluir/${codigocultura}`,
+              {
+                method: "DELETE",
+              }
+            );
 
-                if (!resp.ok) {
-                  Alert.alert("Erro", "Não foi possível excluir.");
-                }
-                ListarCulturas();
-    
-    
-    // Alert.alert("Excluir", "Tem certeza que deseja excluir esta cultura?",
-    //     [
-    //       { text: "Cancelar" },
-    //       {
-    //         text: "Sim",
-    //         onPress: async () => {
-    //           try {
-
-    //             const resp = await fetch(API_BASE_URL + `/sgr-cultura/Excluir/${codigocultura}`, {
-    //               method: "DELETE",
-    //             });
-
-    //             if (!resp.ok) {
-    //               Alert.alert("Erro", "Não foi possível excluir.");
-    //             }
-    //             ListarCulturas();
-    //           } catch (e) {
-    //             Alert.alert("Erro", "Não foi possível excluir.");
-    //           }
-    //         }
-    //       }
-    //     ]
-    //   );
+            if (!resp.ok) {
+              Alert.alert("Erro", "Não foi possível excluir.");
+            }
+            ListarCulturas();
+          } catch (e) {
+            Alert.alert("Erro", "Não foi possível excluir.");
+          }
+        },
+      },
+    ]);
   }
 
   useEffect(() => {
@@ -109,9 +149,12 @@ export default function Cultura() {
       <View style={styles.container}>
         <Text style={styles.titulo}>Culturas</Text>
 
-        <TouchableOpacity style={styles.botaoNovo} onPress={() => setModo("novo")}>
-          <FontAwesome name="plus" size={18} color="#fff" /> 
-          <Text style={styles.txtNovo}> Nova Cultura</Text>
+        <TouchableOpacity
+          style={styles.botaoNovo}
+          onPress={() => AbrirIncluirCultura()}
+        >
+          <FontAwesome name="plus" size={18} color="#fff" />
+          <Text style={styles.txtNovo}> Incluir Cultura</Text>
         </TouchableOpacity>
 
         {loading ? (
@@ -123,16 +166,20 @@ export default function Cultura() {
             renderItem={({ item }) => (
               <View style={styles.item}>
                 <View>
-                  <Text style={styles.itemTitulo}>{item.nome}</Text>
+                  <Text style={styles.itemTitulo}>
+                    {item.codigocultura}-{item.nome}
+                  </Text>
                   <Text style={styles.itemSub}>{item.nomecientifico}</Text>
                 </View>
 
                 <View style={styles.itemBotoes}>
-                  <TouchableOpacity onPress={() => BotaoSair()}>
+                  <TouchableOpacity onPress={() => AbrirEditarCultura(item)}>
                     <FontAwesome name="edit" size={22} color="#1976D2" />
                   </TouchableOpacity>
 
-                  <TouchableOpacity onPress={() => ExcluirCultura(item.codigocultura)}>
+                  <TouchableOpacity
+                    onPress={() => ExcluirCultura(item.codigocultura)}
+                  >
                     <FontAwesome name="trash" size={22} color="#D32F2F" />
                   </TouchableOpacity>
                 </View>
@@ -143,51 +190,57 @@ export default function Cultura() {
       </View>
     );
 
-    if (modo === "novo")
-      return (
-        <View style={styles.container}>
-          <Text style={styles.titulo}>Nova Cultura</Text>
+  if (modo === "novo" || modo === "editar")
+    return (
+      <View style={styles.container}>
+        <Text style={styles.titulo}>
+          {modo === "editar" ? "Editar" : "Incluir"}Cultura
+        </Text>
 
-          <TextInput
-            style={styles.input}
-            placeholder="Nome"
-            value={nome}
-            onChangeText={setNome}
-          />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome"
+          value={nome}
+          onChangeText={setNome}
+        />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Nome Científico"
-            value={nomecientifico}
-            onChangeText={setNomeCientifico}
-          />
+        <TextInput
+          style={styles.input}
+          placeholder="Nome Científico"
+          value={nomecientifico}
+          onChangeText={setNomeCientifico}
+        />
 
-          <TextInput
-            style={styles.input}
-            placeholder="Descrição"
-            value={descricao}
-            onChangeText={setDescricao}
-          />
+        <TextInput
+          style={styles.input}
+          placeholder="Descrição"
+          value={descricao}
+          onChangeText={setDescricao}
+        />
 
-          <TouchableOpacity style={styles.botaoSalvar} onPress={SalvarCultura}>
-            <Text style={styles.txtBtn}>Salvar</Text>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.botaoSalvar} onPress={SalvarCultura}>
+          <Text style={styles.txtBtn}>Salvar</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.botaoVoltar}
-            onPress={() => setModo("lista")}
-          >
-            <Text style={styles.txtBtn}>Voltar</Text>
-          </TouchableOpacity>
-        </View>
-      );
-
+        <TouchableOpacity
+          style={styles.botaoVoltar}
+          onPress={() => setModo("lista")}
+        >
+          <Text style={styles.txtBtn}>Voltar</Text>
+        </TouchableOpacity>
+      </View>
+    );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
 
-  titulo: { fontSize: 24, fontWeight: "bold", textAlign: "center", marginBottom: 20 },
+  titulo: {
+    fontSize: 24,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginBottom: 20,
+  },
 
   botaoNovo: {
     flexDirection: "row",

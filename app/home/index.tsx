@@ -15,7 +15,7 @@ export default function Home() {
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={() => router.push("/cadastros" as any)}>
           <FontAwesome name="user-circle" size={24} color="#000" />
-          <Text style={styles.buttonText}>Gerenciar Usuários</Text>
+          <Text style={styles.buttonText}>Usuários</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.button} onPress={() => router.push("cultura/sgr_cultura" as any)}>
           <FontAwesome name="user-circle" size={24} color="#000" />
