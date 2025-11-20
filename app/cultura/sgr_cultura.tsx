@@ -103,6 +103,7 @@ export default function Cultura() {
 
         if (!resp.ok) {
           Alert.alert("Erro", "Não foi possível salvar a cultura.");
+          return; 
         }
       }
 
