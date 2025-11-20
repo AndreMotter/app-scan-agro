@@ -1,16 +1,9 @@
 import { FontAwesome } from "@expo/vector-icons";
-import { router } from "expo-router";
+import { Picker } from "@react-native-picker/picker";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
 import { API_BASE_URL } from "../../constants/api";
+import { stylesGlobal } from "../../styles/global";
 
 export default function Cultura() {
   const [culturas, setCulturas] = useState<any[]>([]);
@@ -21,12 +14,45 @@ export default function Cultura() {
   const [nome, setNome] = useState("");
   const [nomecientifico, setNomeCientifico] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [correferencia, setCorreferencia] = useState("");
+  const [imagem, setImagem] = useState("");
+  const [situacao, setSituacao] = useState(true);
 
   const [codigocultura, setCodigocultura] = useState<number | null>(null);
 
-  function BotaoSair() {
-    router.replace("/auth/login" as any);
-  }
+  const lista_cores = [
+    { nome: "🔴 Vermelho", valor: "#F44336" },
+    { nome: "🌸 Rosa", valor: "#E91E63" },
+    { nome: "🟣 Roxo", valor: "#9C27B0" },
+    { nome: "🟪 Roxo Escuro", valor: "#673AB7" },
+    { nome: "🔵 Azul Anil", valor: "#3F51B5" },
+    { nome: "🔵 Azul", valor: "#2196F3" },
+    { nome: "🔷 Azul Claro", valor: "#03A9F4" },
+    { nome: "🔹 Ciano", valor: "#00BCD4" },
+    { nome: "💎 Turquesa", valor: "#009688" },
+    { nome: "🟢 Verde", valor: "#4CAF50" },
+    { nome: "🟩 Verde Claro", valor: "#8BC34A" },
+    { nome: "🟨 Lima", valor: "#CDDC39" },
+    { nome: "🟡 Amarelo", valor: "#FFEB3B" },
+    { nome: "🟧 Âmbar", valor: "#FFC107" },
+    { nome: "🟧 Laranja", valor: "#FF9800" },
+    { nome: "🟧 Laranja Escuro", valor: "#FF5722" },
+    { nome: "🟫 Marrom", valor: "#795548" },
+    { nome: "⬜ Cinza", valor: "#9E9E9E" },
+    { nome: "⬛ Cinza Escuro", valor: "#616161" },
+    { nome: "🔳 Cinza Azulado", valor: "#607D8B" },
+    { nome: "⚫ Preto", valor: "#000000" },
+    { nome: "⚪ Branco", valor: "#FFFFFF" },
+    { nome: "🤍 Bege", valor: "#F5F5DC" },
+    { nome: "🥇 Dourado", valor: "#FFD700" },
+    { nome: "🥈 Prata", valor: "#C0C0C0" },
+    { nome: "🥉 Bronze", valor: "#CD7F32" },
+    { nome: "🍷 Vinho", valor: "#800000" },
+    { nome: "🫒 Oliva", valor: "#808000" },
+    { nome: "🌿 Verde Musgo", valor: "#556B2F" },
+    { nome: "🛢 Azul Petróleo", valor: "#004953" },
+  ];
+
 
   async function ListarCulturas() {
     try {
@@ -45,6 +71,7 @@ export default function Cultura() {
     setNome(item.nome);
     setNomeCientifico(item.nomecientifico ?? "");
     setDescricao(item.descricao ?? "");
+    setSituacao(true);
     setModo("editar");
   }
 
@@ -58,6 +85,9 @@ export default function Cultura() {
     setNome("");
     setNomeCientifico("");
     setDescricao("");
+    setCorreferencia("");
+    setImagem("");
+    setSituacao(true);
   }
 
   async function SalvarCultura() {
@@ -150,16 +180,12 @@ export default function Cultura() {
       <View style={styles.container}>
         <Text style={styles.titulo}>Culturas</Text>
 
-        <TouchableOpacity
-          style={styles.botaoNovo}
-          onPress={() => AbrirIncluirCultura()}
-        >
-          <FontAwesome name="plus" size={18} color="#fff" />
-          <Text style={styles.txtNovo}> Incluir Cultura</Text>
+        <TouchableOpacity style={stylesGlobal.button} onPress={() => AbrirIncluirCultura()}>
+          <Text style={stylesGlobal.buttonText}><FontAwesome name="plus" size={18}></FontAwesome> Incluir Cultura</Text>
         </TouchableOpacity>
 
         {loading ? (
-          <Text>Carregando...</Text>
+           <ActivityIndicator size="large" color="#1976D2" />
         ) : (
           <FlatList
             data={culturas}
@@ -178,9 +204,7 @@ export default function Cultura() {
                     <FontAwesome name="edit" size={22} color="#1976D2" />
                   </TouchableOpacity>
 
-                  <TouchableOpacity
-                    onPress={() => ExcluirCultura(item.codigocultura)}
-                  >
+                  <TouchableOpacity onPress={() => ExcluirCultura(item.codigocultura)}>
                     <FontAwesome name="trash" size={22} color="#D32F2F" />
                   </TouchableOpacity>
                 </View>
@@ -195,38 +219,33 @@ export default function Cultura() {
     return (
       <View style={styles.container}>
         <Text style={styles.titulo}>
-          {modo === "editar" ? "Editar" : "Incluir"}Cultura
+          {modo === "editar" ? "Editar" : "Incluir"} Cultura
         </Text>
 
-        <TextInput
-          style={styles.input}
-          placeholder="Nome"
-          value={nome}
-          onChangeText={setNome}
-        />
+        <TextInput style={styles.input} placeholder="Nome" value={nome} onChangeText={setNome} />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Nome Científico"
-          value={nomecientifico}
-          onChangeText={setNomeCientifico}
-        />
+        <TextInput style={styles.input} placeholder="Nome Científico" value={nomecientifico} onChangeText={setNomeCientifico} />
 
-        <TextInput
-          style={styles.input}
-          placeholder="Descrição"
-          value={descricao}
-          onChangeText={setDescricao}
-        />
+        <TextInput style={styles.input} placeholder="Descrição" value={descricao} onChangeText={setDescricao}/>
+
+        <Text style={styles.label}>Cor de Referência</Text>
+
+        <View style={styles.select}>
+          <Picker selectedValue={correferencia} onValueChange={(v) => setCorreferencia(v)}>         
+            <Picker.Item label="Selecione uma cor..." value="" />
+            {lista_cores.map((c, i) => (
+                <Picker.Item key={i} label={c.nome} value={c.valor} />
+            ))}
+          </Picker>
+        </View>
+
+        <TextInput style={styles.input} placeholder="URL da Imagem" value={imagem} onChangeText={setImagem} />
 
         <TouchableOpacity style={styles.botaoSalvar} onPress={SalvarCultura}>
           <Text style={styles.txtBtn}>Salvar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity
-          style={styles.botaoVoltar}
-          onPress={() => setModo("lista")}
-        >
+        <TouchableOpacity style={styles.botaoVoltar} onPress={() => setModo("lista")}>
           <Text style={styles.txtBtn}>Voltar</Text>
         </TouchableOpacity>
       </View>
@@ -288,6 +307,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: "center",
   },
+
+  label: {
+  fontWeight: "bold",
+  marginBottom: 5,
+},
+
+select: {
+  borderWidth: 1,
+  borderColor: "#ccc",
+  borderRadius: 8,
+  marginBottom: 12,
+},
+
+switchContainer: {
+  flexDirection: "row",
+  alignItems: "center",
+  marginVertical: 10,
+  justifyContent: "space-between",
+},
 
   txtBtn: { color: "#fff", fontSize: 16, fontWeight: "bold" },
 });

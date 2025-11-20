@@ -15,7 +15,7 @@ export default function Home() {
       <Image source={require("../../assets/images/scan_agro_sem_fundo.png")} style={stylesGlobal.logo} /> 
       
       <View style={stylesGlobal.buttonContainer}>
-        <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/cadastros" as any)}>
+        <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("usuario/sgr_usuario" as any)}>
           <FontAwesome name="user-circle" size={24} color="#000" />
           <Text style={stylesGlobal.buttonText}>Usuários</Text>
         </TouchableOpacity>

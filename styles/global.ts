@@ -16,12 +16,6 @@ export const stylesGlobal = StyleSheet.create({
     marginBottom: 30,
   },
 
-  welcomeText: {
-    fontSize: 22,
-    fontWeight: "bold",
-    marginBottom: 20,
-  },
-
   buttonContainer: {
     width: "100%",
     maxWidth: 300,

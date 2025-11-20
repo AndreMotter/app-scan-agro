@@ -7,6 +7,11 @@ export default function Login() {
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
 
+  async function Logar() {
+    
+  }
+
+
   function handleEntrar() {
     // aqui tu pode validar login/senha e redirecionar
     router.replace("/home" as any);
