@@ -20,17 +20,17 @@ export default function Home() {
           <Text style={stylesGlobal.buttonText}>Usuários</Text>
         </TouchableOpacity>
         <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("cultura/sgr_cultura" as any)}>
-          <FontAwesome name="user-circle" size={24} color="#000" />
+          <FontAwesome name="bug" size={24} color="#000" />
           <Text style={stylesGlobal.buttonText}>Culturas</Text>
         </TouchableOpacity>
         <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/lancamentos" as any)}>
           <FontAwesome name="list-alt" size={24} color="#000" /> 
           <Text style={stylesGlobal.buttonText}>Lançamentos</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/graficos" as any)}>
+        {/* <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/graficos" as any)}>
           <FontAwesome name="bar-chart" size={24} color="#000" />
           <Text style={stylesGlobal.buttonText}>Gráficos</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
 
       <TouchableOpacity style={stylesGlobal.logoutButton} onPress={Sair}>   
