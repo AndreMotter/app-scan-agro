@@ -1,21 +1,42 @@
 import { FontAwesome } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Alert, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { API_BASE_URL } from "../../constants/api";
 
 export default function Login() {
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
 
-  async function Logar() {
-    
-  }
+  async function handleEntrar() {
+      if (!usuario || !senha) {
+        Alert.alert("Atenção", "Informe login e senha.");
+        return;
+      }
 
+      try {
+        const resp = await fetch(API_BASE_URL + "/srh-usuario/Login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            login: usuario,
+            senha: senha,
+          }),
+        });
 
-  function handleEntrar() {
-    // aqui tu pode validar login/senha e redirecionar
-    router.replace("/home" as any);
-  }
+        if (!resp.ok) {
+          Alert.alert("Erro", "Usuário ou senha inválidos.");
+          return;
+        }
+
+        const data = await resp.json();
+        await AsyncStorage.setItem("token", data.access_token);
+        router.replace("/home" as any);
+      } catch (e) {
+        Alert.alert("Erro", "Falha ao conectar com o servidor.");
+      }
+    }
 
   return (
     <View style={styles.container}>    

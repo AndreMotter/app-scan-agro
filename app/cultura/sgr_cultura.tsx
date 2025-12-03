@@ -1,4 +1,5 @@
 import { FontAwesome } from "@expo/vector-icons";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from "@react-native-picker/picker";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
@@ -56,7 +57,10 @@ export default function Cultura() {
 
   async function ListarCulturas() {
     try {
-      const resp = await fetch(API_BASE_URL + "/sgr-cultura/ListarTodos");
+     const token = await AsyncStorage.getItem("token");
+      const resp = await fetch(API_BASE_URL + "/sgr-cultura/ListarTodos", {
+        headers: { Authorization: "Bearer " + token },
+      });
       const data = await resp.json();
       setCulturas(data);
     } catch (e) {
@@ -97,6 +101,7 @@ export default function Cultura() {
     }
 
     try {
+     const token = await AsyncStorage.getItem("token");
       if (modo === "editar") {
         if (!codigocultura) {
           Alert.alert("Erro", "Nenhuma cultura selecionada para edição.");
@@ -107,7 +112,7 @@ export default function Cultura() {
           API_BASE_URL + `/sgr-cultura/Alterar/${codigocultura}`,
           {
             method: "PATCH",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
             body: JSON.stringify({
               nome,
               nomecientifico,
@@ -123,7 +128,7 @@ export default function Cultura() {
       } else {
         const resp = await fetch(API_BASE_URL + "/sgr-cultura/Salvar", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
           body: JSON.stringify({
             nome,
             nomecientifico,
@@ -146,6 +151,7 @@ export default function Cultura() {
   }
 
   async function ExcluirCultura(codigocultura: number) {
+    const token = await AsyncStorage.getItem("token");
     Alert.alert("Excluir", "Tem certeza que deseja excluir esta cultura?", [
       { text: "Cancelar" },
       {
@@ -155,7 +161,7 @@ export default function Cultura() {
             const resp = await fetch(
               API_BASE_URL + `/sgr-cultura/Excluir/${codigocultura}`,
               {
-                method: "DELETE",
+                method: "DELETE", headers: { Authorization: "Bearer " + token },
               }
             );
 
