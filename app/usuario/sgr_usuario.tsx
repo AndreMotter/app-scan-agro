@@ -152,7 +152,7 @@ export default function Usuario() {
               <View style={styles.item}>
                 <View>
                   <Text style={styles.itemTitulo}>
-                    {item.codigousuario} - {item.login}
+                    {item.codigousuario}-{item.login}
                   </Text>
                 </View>
 

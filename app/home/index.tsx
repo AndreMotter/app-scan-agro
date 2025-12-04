@@ -27,7 +27,7 @@ export default function Home() {
           <FontAwesome name="map" size={24} color="#000" />
           <Text style={stylesGlobal.buttonText}>Área de Coleta</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/lancamentos" as any)}>
+        <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("leituravideo/sgr_leituravideo" as any)}>
           <FontAwesome name="list-alt" size={24} color="#000" /> 
           <Text style={stylesGlobal.buttonText}>Lançamentos Vídeos</Text>
         </TouchableOpacity>

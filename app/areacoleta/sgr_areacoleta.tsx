@@ -2,14 +2,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    FlatList,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { API_BASE_URL } from "../../constants/api";
 import { stylesGlobal } from "../../styles/global";
@@ -154,7 +154,7 @@ export default function AreaColeta() {
           onPress={() => AbrirIncluirArea()}
         >
           <Text style={stylesGlobal.buttonText}>
-            <FontAwesome name="plus" size={18} /> Nova Área de Coleta
+            <FontAwesome name="plus" size={18} /> Incluir Área de Coleta
           </Text>
         </TouchableOpacity>
 
