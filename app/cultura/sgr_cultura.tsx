@@ -17,7 +17,6 @@ export default function Cultura() {
   const [descricao, setDescricao] = useState("");
   const [correferencia, setCorreferencia] = useState("");
   const [imagem, setImagem] = useState("");
-  const [situacao, setSituacao] = useState(true);
 
   const [codigocultura, setCodigocultura] = useState<number | null>(null);
 
@@ -75,7 +74,6 @@ export default function Cultura() {
     setNome(item.nome);
     setNomeCientifico(item.nomecientifico ?? "");
     setDescricao(item.descricao ?? "");
-    setSituacao(true);
     setModo("editar");
   }
 
@@ -91,7 +89,6 @@ export default function Cultura() {
     setDescricao("");
     setCorreferencia("");
     setImagem("");
-    setSituacao(true);
   }
 
   async function SalvarCultura() {

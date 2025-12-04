@@ -23,14 +23,14 @@ export default function Home() {
           <FontAwesome name="bug" size={24} color="#000" />
           <Text style={stylesGlobal.buttonText}>Culturas</Text>
         </TouchableOpacity>
+        <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("areacoleta/sgr_areacoleta" as any)}>
+          <FontAwesome name="map" size={24} color="#000" />
+          <Text style={stylesGlobal.buttonText}>Área de Coleta</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/lancamentos" as any)}>
           <FontAwesome name="list-alt" size={24} color="#000" /> 
-          <Text style={stylesGlobal.buttonText}>Lançamentos</Text>
+          <Text style={stylesGlobal.buttonText}>Lançamentos Vídeos</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("/graficos" as any)}>
-          <FontAwesome name="bar-chart" size={24} color="#000" />
-          <Text style={stylesGlobal.buttonText}>Gráficos</Text>
-        </TouchableOpacity> */}
       </View>
 
       <TouchableOpacity style={stylesGlobal.logoutButton} onPress={Sair}>   
