@@ -68,7 +68,7 @@ export default function LeituraVideo() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.titulo}>Lançamentos de Vídeos</Text>
+      <Text style={styles.titulo}>Consulta de Vídeos</Text>
 
         <View style={{ flexDirection: "row", gap: 10, marginBottom: 12 }}>
         

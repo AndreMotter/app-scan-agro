@@ -29,7 +29,7 @@ export default function Home() {
         </TouchableOpacity>
         <TouchableOpacity style={stylesGlobal.button} onPress={() => router.push("leituravideo/sgr_leituravideo" as any)}>
           <FontAwesome name="list-alt" size={24} color="#000" /> 
-          <Text style={stylesGlobal.buttonText}>Lançamentos Vídeos</Text>
+          <Text style={stylesGlobal.buttonText}>Consultar Vídeos</Text>
         </TouchableOpacity>
       </View>
 
