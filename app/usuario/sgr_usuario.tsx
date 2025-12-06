@@ -1,5 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
 import { API_BASE_URL } from "../../constants/api";
@@ -50,6 +51,10 @@ export default function Usuario() {
     setSenha("");
   }
 
+  function Voltar() {
+    router.replace("/home" as any);
+  }
+  
   async function SalvarUsuario() {
     if (!login.trim()) {
       Alert.alert("Atenção", "O login é obrigatório!");
@@ -163,6 +168,9 @@ export default function Usuario() {
             )}
           />
         )}
+        <TouchableOpacity style={styles.botaoVoltar} onPress={Voltar}>
+          <Text style={styles.txtBtn}>Voltar</Text>
+        </TouchableOpacity>
       </View>
     );
 

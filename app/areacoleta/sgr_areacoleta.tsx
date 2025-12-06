@@ -1,5 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -37,6 +38,10 @@ export default function AreaColeta() {
     } finally {
       setLoading(false);
     }
+  }
+
+  function Voltar() {
+    router.replace("/home" as any);
   }
 
   function AbrirEditarArea(item: any) {
@@ -176,6 +181,9 @@ export default function AreaColeta() {
             )}
           />
         )}
+       <TouchableOpacity style={styles.botaoVoltar} onPress={Voltar}>
+          <Text style={styles.txtBtn}>Voltar</Text>
+       </TouchableOpacity>
       </View>
     );
 

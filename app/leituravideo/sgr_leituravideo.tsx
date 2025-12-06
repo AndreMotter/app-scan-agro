@@ -1,5 +1,6 @@
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -19,6 +20,10 @@ export default function LeituraVideo() {
 
   const [filtroArea, setFiltroArea] = useState("");
   const [filtroCultura, setFiltroCultura] = useState("");
+
+  function Voltar() {
+    router.replace("/home" as any);
+  }
 
   async function ListarLeituras(filtroArea_filtrar?: string, filtroCultura_filtrar?: string) {
     try {
@@ -132,12 +137,24 @@ export default function LeituraVideo() {
           )}
         />
       )}
+      <TouchableOpacity style={styles.botaoVoltar} onPress={Voltar}>
+        <Text style={styles.txtBtn}>Voltar</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: "#fff" },
+
+  txtBtn: { color: "#fff", fontSize: 16, fontWeight: "bold" },
+
+   botaoVoltar: {
+    backgroundColor: "#757575",
+    padding: 14,
+    borderRadius: 8,
+    alignItems: "center",
+  },
 
   input: {
   width: "100%",

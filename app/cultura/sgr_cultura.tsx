@@ -1,6 +1,7 @@
 import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Picker } from "@react-native-picker/picker";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, } from "react-native";
 import { API_BASE_URL } from "../../constants/api";
@@ -147,6 +148,10 @@ export default function Cultura() {
     }
   }
 
+   function Voltar() {
+      router.replace("/home" as any);
+    }
+
   async function ExcluirCultura(codigocultura: number) {
     const token = await AsyncStorage.getItem("token");
     try {
@@ -206,7 +211,10 @@ export default function Cultura() {
               </View>
             )}
           />
-        )}
+        )}  
+        <TouchableOpacity style={styles.botaoVoltar} onPress={Voltar}>
+          <Text style={styles.txtBtn}>Voltar</Text>
+        </TouchableOpacity>
       </View>
     );
 
