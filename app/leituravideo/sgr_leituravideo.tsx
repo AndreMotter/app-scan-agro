@@ -2,14 +2,14 @@ import { FontAwesome } from "@expo/vector-icons";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    Alert,
-    FlatList,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    View
+  ActivityIndicator,
+  Alert,
+  FlatList,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View
 } from "react-native";
 import { API_BASE_URL } from "../../constants/api";
 
@@ -39,31 +39,22 @@ export default function LeituraVideo() {
 
   async function ExcluirLeitura(codigo: number) {
     const token = await AsyncStorage.getItem("token");
+    try {
+      const resp = await fetch(
+        API_BASE_URL + `/sgr-leituravideo/Excluir/${codigo}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
 
-    Alert.alert("Excluir", "Deseja realmente excluir esta leitura?", [
-      { text: "Cancelar" },
-      {
-        text: "Sim",
-        onPress: async () => {
-          try {
-            const resp = await fetch(
-              API_BASE_URL + `/sgr-leituravideo/Excluir/${codigo}`,
-              {
-                method: "DELETE",
-                headers: { Authorization: "Bearer " + token },
-              }
-            );
-
-            if (!resp.ok) {
-              Alert.alert("Erro", "Não foi possível excluir.");
-            }
-            ListarLeituras();
-          } catch (e) {
-            Alert.alert("Erro", "Não foi possível excluir.");
-          }
-        },
-      },
-    ]);
+      if (!resp.ok) {
+        Alert.alert("Erro", "Não foi possível excluir.");
+      }
+      ListarLeituras();
+    } catch (e) {
+      Alert.alert("Erro", "Não foi possível excluir.");
+    }
   }
 
   useEffect(() => {

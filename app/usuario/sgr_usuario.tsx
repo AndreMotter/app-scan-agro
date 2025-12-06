@@ -100,31 +100,23 @@ export default function Usuario() {
 
   async function ExcluirUsuario(id: number) {
     const token = await AsyncStorage.getItem("token");
-    Alert.alert("Excluir", "Tem certeza que deseja excluir este usuário?", [
-      { text: "Cancelar" },
-      {
-        text: "Sim",
-        onPress: async () => {
-          try {
-            const resp = await fetch(
-              API_BASE_URL + `/sgr-usuario/Excluir/${id}`,
-              {
-                method: "DELETE",
-                headers: { Authorization: "Bearer " + token },
-              }
-            );
+    try {
+      const resp = await fetch(
+        API_BASE_URL + `/sgr-usuario/Excluir/${id}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
 
-            if (!resp.ok) {
-              Alert.alert("Erro", "Não foi possível excluir.");
-            }
+      if (!resp.ok) {
+        Alert.alert("Erro", "Não foi possível excluir.");
+      }
 
-            ListarUsuarios();
-          } catch (e) {
-            Alert.alert("Erro", "Não foi possível excluir.");
-          }
-        },
-      },
-    ]);
+      ListarUsuarios();
+    } catch (e) {
+      Alert.alert("Erro", "Não foi possível excluir.");
+    }
   }
 
   useEffect(() => {

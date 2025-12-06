@@ -112,32 +112,23 @@ export default function AreaColeta() {
 
   async function ExcluirArea(codigo: number) {
     const token = await AsyncStorage.getItem("token");
+    try {
+      const resp = await fetch(
+        API_BASE_URL + `/sgr-areacoleta/Excluir/${codigo}`,
+        {
+          method: "DELETE",
+          headers: { Authorization: "Bearer " + token },
+        }
+      );
 
-    Alert.alert("Excluir", "Deseja realmente excluir esta área?", [
-      { text: "Cancelar" },
-      {
-        text: "Sim",
-        onPress: async () => {
-          try {
-            const resp = await fetch(
-              API_BASE_URL + `/sgr-areacoleta/Excluir/${codigo}`,
-              {
-                method: "DELETE",
-                headers: { Authorization: "Bearer " + token },
-              }
-            );
+      if (!resp.ok) {
+        Alert.alert("Erro", "Não foi possível excluir.");
+      }
 
-            if (!resp.ok) {
-              Alert.alert("Erro", "Não foi possível excluir.");
-            }
-
-            ListarAreas();
-          } catch (e) {
-            Alert.alert("Erro", "Não foi possível excluir.");
-          }
-        },
-      },
-    ]);
+      ListarAreas();
+    } catch (e) {
+      Alert.alert("Erro", "Não foi possível excluir.");
+    }
   }
 
   useEffect(() => {

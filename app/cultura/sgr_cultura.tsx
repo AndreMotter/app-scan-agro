@@ -149,29 +149,21 @@ export default function Cultura() {
 
   async function ExcluirCultura(codigocultura: number) {
     const token = await AsyncStorage.getItem("token");
-    Alert.alert("Excluir", "Tem certeza que deseja excluir esta cultura?", [
-      { text: "Cancelar" },
-      {
-        text: "Sim",
-        onPress: async () => {
-          try {
-            const resp = await fetch(
-              API_BASE_URL + `/sgr-cultura/Excluir/${codigocultura}`,
-              {
-                method: "DELETE", headers: { Authorization: "Bearer " + token },
-              }
-            );
+    try {
+      const resp = await fetch(
+        API_BASE_URL + `/sgr-cultura/Excluir/${codigocultura}`,
+        {
+          method: "DELETE", headers: { Authorization: "Bearer " + token },
+        }
+      );
 
-            if (!resp.ok) {
-              Alert.alert("Erro", "Não foi possível excluir.");
-            }
-            ListarCulturas();
-          } catch (e) {
-            Alert.alert("Erro", "Não foi possível excluir.");
-          }
-        },
-      },
-    ]);
+      if (!resp.ok) {
+        Alert.alert("Erro", "Não foi possível excluir.");
+      }
+      ListarCulturas();
+    } catch (e) {
+      Alert.alert("Erro", "Não foi possível excluir.");
+    }
   }
 
   useEffect(() => {

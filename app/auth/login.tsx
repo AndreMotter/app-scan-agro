@@ -16,7 +16,7 @@ export default function Login() {
       }
 
       try {
-        const resp = await fetch(API_BASE_URL + "/srh-usuario/Login", {
+        const resp = await fetch(API_BASE_URL + "/sgr-usuario/Login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
